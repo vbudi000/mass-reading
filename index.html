@@ -2,21 +2,122 @@
 <html>
 <head>
     <title>Mass Reading collector</title>
+    <!--link rel="stylesheet" href="styles.css"-->
+    <style>
+        body {font-family: Arial;font-size: large;}
+    </style>
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
+<script>
+    console.log("start");
+    $.get( "/masstexts?pname=kyrieLong", function( data ) {
+        $( "#penitential" ).html( data );
+        console.log( "Load penitential." );
+    });
+    $.get( "/masstexts?pname=niceneCreed", function( data ) {
+        $( "#creed" ).html( data );
+        console.log( "Load creed." );
+    });
+    let date_time = new Date();
+    if (date_time.getDay() != 0) {
+        date_time.setDate(date_time.getDate() + 8 - date_time.getDay());
+    }
+
+    let date = ("0" + date_time.getDate()).slice(-2);
+    let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
+    let year = ("0" + date_time.getFullYear()).slice(-2);
+    let today=month+date+year
+    $.get( "/readings?pname="+today, function( data ) {
+        $( "#reading" ).html( data );
+        console.log( "Load readings." );
+    });
+
+    console.log("end");
+</script>
     <h1>Mass Reading collector</h1>
+    <form onsubmit="return false">
+        <script>
+            function loadopen() {
+                let hynum = document.getElementById("nopen").value;
+                console.log("loadopen " + hynum);
+                $.get( "/hymnary?pname="+hynum, function( data ) {
+                    $( "#opening" ).html( data );
+                });
+
+            }
+        </script>
+        <label for="nopen">Opening Hymn: </label><input type="number" id="nopen" name="nopen">
+        <input type="submit" onclick="loadopen()">
+    </form>
+    <form onsubmit="return false">
+        <script>
+            function loadgift() {
+                let hynum = document.getElementById("ngift").value;
+                console.log("loadgift " + hynum);
+                $.get( "/hymnary?pname="+hynum, function( data ) {
+                    $( "#gift" ).html( data );
+                });
+
+            }
+        </script>
+        <label for="ngift">Gift Preparation Hymn: </label><input type="number" id="ngift" name="ngift">
+        <input type="submit" onclick="loadgift()">
+    </form>
+    <form onsubmit="return false">
+        <script>
+            function loadcomm() {
+                let hynum = document.getElementById("ncomm").value;
+                console.log("loadcomm " + hynum);
+                $.get( "/hymnary?pname="+hynum, function( data ) {
+                    $( "#communion" ).html( data );
+                });
+
+            }
+        </script>
+        <label for="ncomm">Communion Hymn: </label><input type="number" id="ncomm" name="ncomm">
+        <input type="submit" onclick="loadcomm()">
+    </form>
+    <form onsubmit="return false">
+        <script>
+            function loadclos() {
+                let hynum = document.getElementById("nclos").value;
+                console.log("loadclos " + hynum);
+                $.get( "/hymnary?pname="+hynum, function( data ) {
+                    $( "#closing" ).html( data );
+                });
+
+            }
+        </script>
+        <label for="nclos">Gift Preparation Hymn: </label><input type="number" id="nclos" name="nclos">
+        <input type="submit" onclick="loadclos()">
+    </form>
+    <h3>Opening</h3>
+    <div id="opening">
+
+    </div>
+    <h3>Confession</h3>
     <div id="penitential">
 
     </div>
     <div id="reading">
-        <iframe src="https://bible.usccb.org/bible/readings/082023.cfm"></iframe> 
     </div>
+    <h3>Nicene Creed</h3>
     <div id="creed">
 
     </div>
+    <h3>Preparation for the Gift</h3>
     <div id="gift">
 
     </div>
-    <div id=""
+    <h3>Communion</h3>
+    <div id="communion">
+        
+    </div>
+    <h3>Closing</h3>
+    <div id="closing">
+        
+    </div>
+
 </body>
 </html>

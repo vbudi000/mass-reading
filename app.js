@@ -1,0 +1,214 @@
+const { JSDOM } = require("jsdom");
+const axios = require("axios");
+const express = require("express");
+const fs = require("fs");
+const app = express();
+const port = process.env.PORT || 8000;
+
+app.get("/", (req, res) => {
+    const html = fs.readFileSync("./index.html", "utf8");
+
+    res.type('html').send(html);
+}
+);
+
+app.get("/prayers", async (req, res) => {
+    const resdata = await prayers(req.query.pname);
+    res.type('html').send(resdata);
+}
+);
+app.get("/masstexts", async (req, res) => {
+    const resdata = await masstexts(req.query.pname);
+    res.type('html').send(resdata);
+}
+);
+app.get("/readings", async (req, res) => {
+    const resdata = await readings(req.query.pname);
+    res.type('html').send(resdata);
+}
+);
+app.get("/hymnary", async (req, res) => {
+    const resdata = await hymnary(req.query.pname);
+    res.type('html').send(resdata);
+}
+);
+
+const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+
+server.keepAliveTimeout = 120 * 1000;
+server.headersTimeout = 120 * 1000;
+
+const headhtml = ``
+//<!DOCTYPE html>
+//<html>
+//  <head>
+//    <title>Hello from Render!</title>
+//  </head>
+//  <body>
+//`
+const tailhtml = ``
+//</body>
+//</html>
+//`
+const html = `
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello from Render!</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+      setTimeout(() => {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+          disableForReducedMotion: true
+        });
+      }, 500);
+    </script>
+    <style>
+      @import url("https://p.typekit.net/p.css?s=1&k=vnd5zic&ht=tk&f=39475.39476.39477.39478.39479.39480.39481.39482&a=18673890&app=typekit&e=css");
+      @font-face {
+        font-family: "neo-sans";
+        src: url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff2"), url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff"), url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("opentype");
+        font-style: normal;
+        font-weight: 700;
+      }
+      html {
+        font-family: neo-sans;
+        font-weight: 700;
+        font-size: calc(62rem / 16);
+      }
+      body {
+        background: white;
+      }
+      section {
+        border-radius: 1em;
+        padding: 1em;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+      }
+    </style>
+  </head>
+  <body>
+    <section>
+      Hello from Render!
+    </section>
+  </body>
+</html>
+`
+
+const readings = async (sundate) => {
+link = "https://bible.usccb.org/bible/readings/"+sundate+".cfm"
+try {
+    console.log(`Readings: ${link}`);
+
+    const linkHtml = (await axios.get(link)).data;
+
+    const doc = new JSDOM(linkHtml, {
+      url: link,
+    });
+
+    const innerblock = doc.window.document.querySelectorAll('div.innerblock');
+    const innerdiv = doc.window.document.querySelectorAll('div.innerblock > #content-body');
+    var result = "";
+    for (let blocktxt of innerblock) {
+        if (blocktxt.querySelector('h3') !== null) {
+            result = result + blocktxt.querySelector('h3').outerHTML; 
+            result = result + blocktxt.querySelector('div.address').outerHTML; 
+            result = result + blocktxt.querySelector('div.content-body').innerHTML;
+
+        }
+      }
+    console.log(`Readings: ${link}`)
+    return result
+  } catch (error) {
+    console.error(error);
+    console.log(`Error at ${link}`)
+  }
+}
+
+const masstexts = async (pname) => {
+    link = "https://universalis.com/static/mass/orderofmass.htm";
+    try {
+        console.log(`MassTexts: ${link}`);
+
+        const linkHtml = (await axios.get(link)).data;
+    
+        const doc = new JSDOM(linkHtml, {
+          url: link,
+        });
+    
+        const innerblock = doc.window.document.querySelector('#'+pname);
+
+        console.log(`MassTexts: ${link}`)
+        return innerblock.innerHTML;
+
+    } catch (error) {
+        console.error(error);
+        console.log(`Error at ${link}`)
+    }
+}
+ 
+const prayers = async (pname) => {
+    link = "https://www.daily-prayers.org/"+pname+"/";
+    try {
+        console.log(`Prayers: ${link}`);
+
+        const linkHtml = (await axios.get(link)).data;
+    
+        const doc = new JSDOM(linkHtml, {
+          url: link,
+        });
+    
+        const innerblock1 = doc.window.document.querySelector('div.entry-content > div.wp-block-group');
+        const innerblock = innerblock1.querySelector('p');
+
+        innerblock.querySelectorAll('g').forEach(e => e.remove());
+        
+        console.log(`Prayers: ${link}`)
+
+        return innerblock.innerHTML;
+    } catch (error) {
+        console.error(error);
+        console.log(`Error at ${link}`)
+    }
+}
+
+const hymnary = async (pname) => {
+    link = "https://hymnary.org/hymn/G32011/"+pname;
+    try {
+        console.log(`Hymnary: ${link}`);
+
+        const linkHtml = (await axios.get(link)).data;
+    
+        const doc = new JSDOM(linkHtml, {
+          url: link,
+        });
+    
+        const images = doc.window.document.querySelectorAll('img.instance_pagescan');
+        var result = "";
+        for (let image of images) {
+            ilink = "https://hymnary.org" + image.getAttribute("src");
+            result = result + `<img src="`+ilink+`">`;     
+        }
+        console.log(`Hymnary: ${link}`)
+        return result;
+
+    } catch (error) {
+        console.error(error);
+        console.log(`Error at ${link}`)
+    }
+}
+ 
+
+     
+    
+//masstexts("#kyrieLong")
+//masstexts("#niceneCreed")
+//prayers("traditional-prayers/i-confess")
+//prayers("father-son-holy-spirit/creed-nicene")
+//readings("082023") //08-20-2023
