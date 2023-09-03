@@ -1,9 +1,14 @@
+* {
+    font-family: Arial;
+    font-size: large;
+}
+
 body {
     font-family: Arial;
     font-size: large;
 }
 
-.rubric {
+div.rubric {
     font-family: 'Times New Roman';
     font-size: small;
 }
