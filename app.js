@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
 app.get("/index.html", (req, res) => {
   const html = fs.readFileSync("./index.html", "utf8");
 
-  res.type('html').send(html);
+  res.type('text/css').send(html);
 }
 );
 
