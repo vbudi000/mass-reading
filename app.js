@@ -12,6 +12,20 @@ app.get("/", (req, res) => {
 }
 );
 
+app.get("/index.html", (req, res) => {
+  const html = fs.readFileSync("./index.html", "utf8");
+
+  res.type('html').send(html);
+}
+);
+
+app.get("/styles.css", (req, res) => {
+  const html = fs.readFileSync("./styles.css", "utf8");
+
+  res.type('html').send(html);
+}
+);
+
 app.get("/prayers", async (req, res) => {
     const resdata = await prayers(req.query.pname);
     res.type('html').send(resdata);
@@ -193,7 +207,7 @@ const hymnary = async (pname) => {
         var result = "";
         for (let image of images) {
             ilink = "https://hymnary.org" + image.getAttribute("src");
-            result = result + `<img src="`+ilink+`">`;     
+            result = result + `<img src="`+ilink+`"><br />`;     
         }
         console.log(`Hymnary: ${link}`)
         return result;
