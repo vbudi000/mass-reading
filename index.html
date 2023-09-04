@@ -89,29 +89,29 @@
     <form onsubmit="return false">
         <script>
             function loadcomm1() {
-                let hynum = document.getElementById("ncomm").value;
-                console.log("loadcomm " + hynum);
+                let hynum = document.getElementById("ncomm1").value;
+                console.log("loadcomm1 " + hynum);
                 $.get( "/hymnary?pname="+hynum, function( data ) {
                     $( "#communion1" ).html( data );
                 });
 
             }
         </script>
-        <label for="ncomm">Communion Hymn 1: </label><input type="number" id="ncomm" name="ncomm">
+        <label for="ncomm">Communion Hymn 1: </label><input type="number" id="ncomm1" name="ncomm1">
         <input type="submit" onclick="loadcomm1()">
     </form>
     <form onsubmit="return false">
         <script>
             function loadcomm2() {
-                let hynum = document.getElementById("ncomm").value;
-                console.log("loadcomm " + hynum);
+                let hynum = document.getElementById("ncomm2").value;
+                console.log("loadcomm2 " + hynum);
                 $.get( "/hymnary?pname="+hynum, function( data ) {
                     $( "#communion2" ).html( data );
                 });
 
             }
         </script>
-        <label for="ncomm">Communion Hymn 2: </label><input type="number" id="ncomm" name="ncomm">
+        <label for="ncomm">Communion Hymn 2: </label><input type="number" id="ncomm2" name="ncomm2">
         <input type="submit" onclick="loadcomm2()">
     </form>
     <form onsubmit="return false">
