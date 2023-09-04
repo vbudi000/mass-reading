@@ -165,7 +165,7 @@ const hymnary = async (pname) => {
             result = result + `<img src="`+ilink+`"><br />`;     
         }
         if (count === 0) {
-          result = `<p>image not available</p>`
+          result = `<p class="rubric">image not available</p>`
         }
         console.log(`Hymnary: ${link}`)
         return result;
