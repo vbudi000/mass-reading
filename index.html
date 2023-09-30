@@ -42,9 +42,11 @@
     //    console.log( "Load creed." );
     //});
     let date_time = new Date();
+    console.log("Today is "+date_time+" and DOW "+date_time.getDay());
     if (date_time.getDay() != 0) {
-        date_time.setDate(date_time.getDate() + 8 - date_time.getDay());
+        date_time.setDate(date_time.getDate() + 7 - date_time.getDay());
     }
+    console.log("Loading Sunday reading "+date_time);
 
     let date = ("0" + date_time.getDate()).slice(-2);
     let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
@@ -189,6 +191,12 @@
     <div id="closing">
         
     </div>
+    <hr />
+    <p class="rubric">
+        &copy; Budi Darmawan 2023 <br />
+        Based on US Conference of Catholic Bishops reading at <A href="https://bible.usccb.org/">usccb.org</A><br />
+        Songs are retrieved from <A href="https://hymnary.org/">Hymnary.org</A>
+    </p>
 
 </body>
 </html>
