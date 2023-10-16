@@ -25,6 +25,12 @@ app.get("/imgmap.json", (req, res) => {
 }
 );
 
+app.get("/images", (req, res) => {
+  const html = fs.readFileSync("./images/"+req.query.imgname+".png", "utf8");
+  res.type('image/png').send(html);
+}
+);
+
 app.get("/styles.css", (req, res) => {
   const html = fs.readFileSync("./styles.css", "utf8");
 
