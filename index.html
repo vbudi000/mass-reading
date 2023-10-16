@@ -70,6 +70,7 @@
                 } else {
                     $.getJSON('https://mass-reading.onrender.com/imgmap.json', function(data) {
                         // JSON result in `data` variable
+                        console.log(data);
                         var pages = data.find(x => x.id === hynum).pages;
                         console.log("==="+pages);
                         retdata="<p>";
