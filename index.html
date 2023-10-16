@@ -68,16 +68,19 @@
                 if ((hynum<991) || (hynum >1213)) {
                     data="<p>Invalid number "+hynum+"</p>"
                 } else {
-                    import imgmap from "./imgmap.json" assert { type: JSON };
-                    var pages = imgmap.find(x => x.id === hynum).pages;
-                    data="<p>" + "</p>"
+                    $.getJSON('https://mass-reading.onrender.com/imgmap.json', function(data) {
+                        // JSON result in `data` variable
+                        var pages = data.find(x => x.id === hynum).pages;
+                    retdata="<p>";
                     for (let ij = 0; ij<pages.legth; ij++) {
-                        let pg = pages[ij]
-                        data = data + "<img ref=\"images/"+pg+".png\"></img><br />"
+                        let pg = pages[ij];
+                        retdata = retdata + "<img ref=\"images/"+pg+".png\"></img><br />"
                     }
-                    data=data + "</p>"
+                    retdata=retdata + "</p>"
+                    $( "#gather" ).html( retdata );
+
+                    });
                 }
-                $( "#gather" ).html( data );
             }
         </script>
         <label for="nopen">Today reading: </label><input type="number" id="ngather" name="ngather">
