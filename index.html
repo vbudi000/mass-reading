@@ -71,10 +71,13 @@
                     $.getJSON('https://mass-reading.onrender.com/imgmap.json', function(data) {
                         // JSON result in `data` variable
                         var pages = data.find(x => x.id === hynum).pages;
+                        console.log("==="+pages);
                     retdata="<p>";
                     for (let ij = 0; ij<pages.legth; ij++) {
                         let pg = pages[ij];
                         retdata = retdata + "<img ref=\"images/"+pg+".png\"></img><br />"
+                        console.log("==="+retdata);
+
                     }
                     retdata=retdata + "</p>"
                     $( "#gather" ).html( retdata );
