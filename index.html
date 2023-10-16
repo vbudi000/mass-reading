@@ -64,7 +64,7 @@
         <script>
             function loadimg1() {
                 let hynum = document.getElementById("ngather").value;
-                console.log("loadimg " + hynum);
+                console.log("loadimg1 " + hynum);
                 if ((hynum<991) || (hynum >1213)) {
                     data="<p>Invalid number "+hynum+"</p>"
                 } else {
@@ -72,15 +72,15 @@
                         // JSON result in `data` variable
                         var pages = data.find(x => x.id === hynum).pages;
                         console.log("==="+pages);
-                    retdata="<p>";
-                    for (let ij = 0; ij<pages.legth; ij++) {
-                        let pg = pages[ij];
-                        retdata = retdata + "<img ref=\"images/"+pg+".png\"></img><br />"
-                        console.log("==="+retdata);
+                        retdata="<p>";
+                        for (let ij = 0; ij<pages.legth; ij++) {
+                            let pg = pages[ij];
+                            retdata = retdata + "<img ref=\"images/"+pg+".png\"></img><br />"
+                            console.log("==="+retdata);
 
-                    }
-                    retdata=retdata + "</p>"
-                    $( "#gather" ).html( retdata );
+                        }
+                        retdata=retdata + "</p>"
+                        $( "#gather" ).html( retdata );
 
                     });
                 }
