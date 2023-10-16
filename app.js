@@ -27,7 +27,8 @@ app.get("/imgmap.json", (req, res) => {
 
 app.get("/images/*", (req, res) => {
   var imgpth = req.url;
-  res.sendFile("."+imgpth);  
+  console.log(imgpth)
+  res.sendFile(imgpth);  
   //const html = fs.readFileSync("./images/"+req.query.imgname+".png", "utf8");
   //res.type('image/png').send(html);
 }
