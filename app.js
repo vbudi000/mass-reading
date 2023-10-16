@@ -19,6 +19,12 @@ app.get("/index.html", (req, res) => {
 }
 );
 
+app.get("/imgmap.json", (req, res) => {
+  const html = fs.readFileSync("./imgmap.json", "utf8");
+  res.type('application/json').send(html);
+}
+);
+
 app.get("/styles.css", (req, res) => {
   const html = fs.readFileSync("./styles.css", "utf8");
 
@@ -36,6 +42,11 @@ app.get("/masstexts", async (req, res) => {
     res.type('html').send(resdata);
 }
 );
+app.get("/psalm", async (req, res) => {
+  const resdata = await psalmget(req.query.pname);
+  res.type('html').send(resdata);
+}
+);
 app.get("/readings", async (req, res) => {
     const resdata = await readings(req.query.pname);
     res.type('html').send(resdata);
@@ -47,7 +58,7 @@ app.get("/hymnary", async (req, res) => {
 }
 );
 
-const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+const server = app.listen(port, () => console.log(`Mass reading app listening on port ${port}!`));
 
 server.keepAliveTimeout = 120 * 1000;
 server.headersTimeout = 120 * 1000;
